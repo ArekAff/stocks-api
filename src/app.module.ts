@@ -5,10 +5,9 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { StocksModule } from './stocks/stocks.module';
-import { Type } from 'class-transformer';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
-import { StocksService } from './stocks/stocks.service';
+
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
@@ -19,6 +18,6 @@ import { StocksService } from './stocks/stocks.service';
     StocksModule,
   ],
   controllers: [AppController],
-  providers: [AppService, StocksService],
+  providers: [AppService],
 })
 export class AppModule {}
