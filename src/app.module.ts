@@ -8,7 +8,7 @@ import { StocksModule } from './stocks/stocks.module';
 import { Type } from 'class-transformer';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './config/typeorm.config';
-import { TasksService } from './tasks/tasks.service';
+import { StocksService } from './stocks/stocks.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
@@ -19,6 +19,6 @@ import { TasksService } from './tasks/tasks.service';
     StocksModule,
   ],
   controllers: [AppController],
-  providers: [AppService, TasksService],
+  providers: [AppService, StocksService],
 })
 export class AppModule {}
