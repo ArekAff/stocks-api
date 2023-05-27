@@ -4,7 +4,7 @@ import { CreateStockDto } from "./dtos/create-stock.dto";
 import { InternalServerErrorException } from "@nestjs/common";
 
 export class StocksRepository extends Repository<Stock> {
-    async createStock({ ticker, price }: CreateStockDto) {
+    async createStock({ ticker, price }: CreateStockDto) : Promise<Stock>{
         const stock = this.create({
             ticker,
             price,
