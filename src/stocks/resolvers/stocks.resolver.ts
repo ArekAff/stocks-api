@@ -15,10 +15,8 @@ export class StocksResolver {
 
     @Mutation(returns => Stock)
     async createStock(
-        @Args('stock') createStockDto: CreateStockDto
+        @Args('Stock') createStockDto: CreateStockDto
     ): Promise<Stock> {
         return this.stocksService.createStock(createStockDto);
     }
-
-
 }
