@@ -1,5 +1,5 @@
 import { Field, InputType} from '@nestjs/graphql';
-import { IsNotEmpty } from "class-validator";
+import { IsDecimal, IsNotEmpty, IsNumber } from "class-validator";
 
 @InputType()
 export class CreateStockDto {
@@ -9,9 +9,8 @@ export class CreateStockDto {
 
     @IsNotEmpty()
     @Field()
+    @IsNumber()
+    @IsDecimal({ decimal_digits: '2' })
     price : number;
 
-    @IsNotEmpty()
-    @Field()
-    timestamp : Date;
 }
