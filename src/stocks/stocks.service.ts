@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { StocksRepository } from './stocks.repository';
 import { CreateStockDto } from './dtos/create-stock.dto';
 import { Stock } from './entities/stocks.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class StocksService {
