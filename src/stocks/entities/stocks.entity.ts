@@ -1,8 +1,9 @@
-import { Field, ObjectType, ID } from "type-graphql";
+import { Field, ObjectType, ID } from "@nestjs/graphql";
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 
-@Entity()
+
 @ObjectType()
+@Entity()   
 export class Stock extends BaseEntity {
     @PrimaryGeneratedColumn()
     @Field(type => ID)
