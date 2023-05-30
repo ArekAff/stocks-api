@@ -16,6 +16,7 @@ scalar DateTime
 
 type Query {
   getStocks: [Stock!]!
+  getStockByTicker(ticker: String!): Stock!
 }
 
 type Mutation {

@@ -18,6 +18,17 @@ export class StocksRepository extends Repository<Stock> {
         return stocks;
     }
 
+    async getStockByTicker(ticker: string): Promise<Stock> {
+        const query = this.createQueryBuilder('stock');
+        query.where('stock.ticker = :ticker', { ticker });
+        try {
+            const stock = await query.getOne();
+            return stock;
+        } catch (error) {
+            throw new InternalServerErrorException();
+        }
+    }
+
     async createStock({ ticker, price}: CreateStockDto): Promise<Stock> {
         const stock = this.create({
             ticker,
