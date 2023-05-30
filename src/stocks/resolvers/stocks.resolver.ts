@@ -13,6 +13,11 @@ export class StocksResolver {
         return this.stocksService.getStocks();
     }
 
+    @Query(() => Stock)
+    async getStockByTicker(@Args('ticker') ticker: string): Promise<Stock> {
+        return this.stocksService.getStockByTicker(ticker);
+    }   
+
     @Mutation(returns => Stock)
     async createStock(
         @Args('Stock') createStockDto: CreateStockDto
