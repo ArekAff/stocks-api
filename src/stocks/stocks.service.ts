@@ -11,6 +11,10 @@ export class StocksService {
     return await this.stocksRepository.getStocks();
     }
 
+    async getStockByTicker(ticker: string): Promise<Stock> {
+    return await this.stocksRepository.getStockByTicker(ticker);
+    }
+
     async createStock(createStockDto: CreateStockDto): Promise<Stock> {
     return await this.stocksRepository.createStock(createStockDto);
     }
