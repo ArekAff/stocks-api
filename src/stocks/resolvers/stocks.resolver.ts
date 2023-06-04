@@ -26,17 +26,16 @@ export class StocksResolver {
         return this.stocksService.createStock(createStockDto);
     }
 
-    @Mutation(() => ID) 
-    async deleteTaskByID(@Args('id') id: string): Promise<string> { 
-        return await this.stocksService.deleteStockByID(id);
-    }
+    // @Mutation(() => ID) 
+    // async deleteTaskByID(@Args('id') id: string): Promise<string> { 
+    //     return await this.stocksService.deleteStockByID(id);
+    // }
 
     @Mutation(() => Stock)
     async updateStock(
-        @Args('ticker') ticker: string,
         @Args('StockUpdate') updateStockDto: UpdateStockDto
     ): Promise<Stock> {
-        return this.stocksService.updateStock(ticker, updateStockDto);
+        return this.stocksService.updateStock(updateStockDto);
     }
     
 }

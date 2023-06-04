@@ -3,7 +3,6 @@
 # ------------------------------------------------------
 
 type Stock {
-  id: ID!
   ticker: String!
   price: Float!
   timestamp: DateTime!
@@ -21,8 +20,7 @@ type Query {
 
 type Mutation {
   createStock(Stock: CreateStockDto!): Stock!
-  deleteTaskByID(id: String!): ID!
-  updateStock(ticker: String!, StockUpdate: UpdateStockDto!): Stock!
+  updateStock(StockUpdate: UpdateStockDto!): Stock!
 }
 
 input CreateStockDto {

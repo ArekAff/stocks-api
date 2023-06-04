@@ -19,20 +19,20 @@ export class StocksService {
     return await this.stocksRepository.createStock(createStockDto);
     }
 
-    async deleteStockByID(id: string): Promise<string> {
-        const deleteResult = await this.stocksRepository.delete({ id });
+    // async deleteStockByID(id: string): Promise<string> {
+    //     const deleteResult = await this.stocksRepository.delete({ id });
 
-        if (deleteResult.affected === 0) {
-            throw new InternalServerErrorException(
-                `Stock with ID ${id} not found.`
-            );
-        } else {
-            return id;
-        }
-    }
+    //     if (deleteResult.affected === 0) {
+    //         throw new InternalServerErrorException(
+    //             `Stock with ID ${id} not found.`
+    //         );
+    //     } else {
+    //         return id;
+    //     }
+    // }
 
-    async updateStock(ticker: string, updateStockDto: CreateStockDto): Promise<Stock> {
-        return await this.stocksRepository.updateStock(ticker, updateStockDto);
+    async updateStock(updateStockDto: CreateStockDto): Promise<Stock> {
+        return await this.stocksRepository.updateStock(updateStockDto);
     }
 
 
