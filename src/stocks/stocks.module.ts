@@ -6,6 +6,6 @@ import { StocksResolver } from './resolvers/stocks.resolver';
 
 @Module({
   imports: [TypeOrmModule.forFeature([StocksRepository])],
-  providers: [StocksResolver,StocksService],
+  providers: [StocksResolver,StocksService, StocksRepository],
 })
 export class StocksModule {}
