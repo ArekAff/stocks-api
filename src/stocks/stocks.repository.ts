@@ -34,7 +34,7 @@ export class StocksRepository extends Repository<Stock> {
         // if the stock already exists, update it
         const check = await this.getStockByTicker(ticker);
         if (check) {
-            return await this.updateStock(ticker, {ticker, price, timestamp});
+            return await this.updateStock({ticker, price, timestamp});
         }
         const stock = this.create({
             ticker,
@@ -49,7 +49,7 @@ export class StocksRepository extends Repository<Stock> {
             throw error.message;
         }
     }
-    async updateStock(ticker: string, { price, timestamp}: CreateStockDto): Promise<Stock> {
+    async updateStock({ticker, price, timestamp}: CreateStockDto): Promise<Stock> {
         const stock = await this.getStockByTicker(ticker);
         // if the stock doesn't exist, create it
         if (!stock) {
