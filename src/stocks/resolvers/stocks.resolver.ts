@@ -1,9 +1,8 @@
 import { Args, Mutation, Resolver, Query} from '@nestjs/graphql';
-import { Stock } from '../entities/stocks.entity';
+import { Stock } from '../../entities/stocks.entity';
 import { CreateStockDto } from '../dtos/create-stock.dto';
 import { StocksService } from '../stocks.service';
 import { ID } from 'type-graphql';
-import { UpdateStockDto } from '../dtos/update-stock.dto';
 @Resolver(() => Stock) 
 export class StocksResolver {
 
@@ -31,11 +30,5 @@ export class StocksResolver {
     //     return await this.stocksService.deleteStockByID(id);
     // }
 
-    @Mutation(() => Stock)
-    async updateStock(
-        @Args('StockUpdate') updateStockDto: UpdateStockDto
-    ): Promise<Stock> {
-        return this.stocksService.updateStock(updateStockDto);
-    }
     
 }
