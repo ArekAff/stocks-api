@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StocksService } from './stocks.service';
 import { StocksRepository } from './stocks.repository';
-import { Stock } from './entities/stocks.entity';
+import { Stock } from '../entities/stocks.entity';
 type MockType<T> = {
   [P in keyof T]?: jest.Mock<{}>;
 };
