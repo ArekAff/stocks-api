@@ -3,44 +3,32 @@ import { StocksService } from '../stocks.service';
 import {CreateStockDto } from '../dtos/create-stock.dto';
 import {StocksResolver} from '../resolvers/stocks.resolver';
 import { before } from 'node:test';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { typeOrmConfig } from 'src/config/typeorm.config';
+import { StocksRepository } from '../stocks.repository';
 
 describe('StocksResolver', () => {
     let resolver: StocksResolver;
-    beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            providers: [
-                StocksResolver,
-                {
-                    provide: StocksService,
-                    useFactory: () => ({
-                        createStock: jest.fn((stock: CreateStockDto) => ({
-                            ...stock,
-                        })),
-                        getStocks: jest.fn(() => [
-                            {
-                                ticker: "AAPL",
-                                price: 100,
-                                timestamp: new Date(),
-                            },
-                            {
-                                ticker: "GOOG",
-                                price: 200,
-                                timestamp: new Date(),
-                            },
-                        ]),
-                        getStockByTicker: jest.fn((ticker: string) => ({
-                            ticker: ticker,
-                            price: 100,
-                            timestamp: new Date(),
-                        })),
-                    }),
-                }
-            ]
-        }).compile();
-        resolver = module.get<StocksResolver>(StocksResolver);
+    let module: TestingModule;
+
+beforeAll(async () => {
+    module = await Test.createTestingModule({
+        imports: [
+        TypeOrmModule.forRoot(typeOrmConfig), // Use the actual TypeORM configuration
+        TypeOrmModule.forFeature([StocksRepository]), // Import the repository
+    ],
+    providers: [StocksResolver, StocksService],
+    }).compile();
+
+    resolver = module.get<StocksResolver>(StocksResolver);
+});
+
+    afterAll(async () => {
+    await module.close(); // Close the module after all tests are completed
     });
+
     it('should be defined', () => {
-        expect(resolver).toBeDefined();
+    expect(resolver).toBeDefined();
     });
     describe('getStocks', () => {
         it('should return all stocks', async () => {
