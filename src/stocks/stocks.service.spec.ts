@@ -1,7 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { StocksService } from './stocks.service';
 import { StocksRepository } from './stocks.repository';
-import { Stock } from './entities/stocks.entity';
+import { Stock } from '../entities/stocks.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { typeOrmConfig } from 'src/config/typeorm.config';
 type MockType<T> = {
   [P in keyof T]?: jest.Mock<{}>;
 };
@@ -12,13 +14,22 @@ describe('StocksService', () => {
     getStocks: jest.fn(),
     getStockByTicker: jest.fn(),
     createStock: jest.fn(),
-    updateStock: jest.fn(),
 
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [StocksService],
+      providers: [StocksService,
+        {
+          provide: StocksRepository,
+          useClass: StocksRepository,
+        },
+      ],
+      imports: [
+        TypeOrmModule.forRootAsync({
+          useFactory: () => typeOrmConfig,
+        }),
+      ],
     }).compile();
 
     service = module.get<StocksService>(StocksService);
@@ -79,19 +90,6 @@ describe('StocksService', () => {
       const createdStock = await service.createStock(stockDTO);
       expect(createdStock).toMatchObject(stockDTO);
       expect(stockRepositoryMock.createStock).toHaveBeenCalledWith(stockDTO);
-    });
-  });
-  describe("updateStock", () => {
-    it("should update stock", async () => {
-      const updateDTO = {
-        ticker: "AAPL",
-        price: 100,
-        timestamp: new Date(),
-      };
-      stockRepositoryMock.updateStock.mockReturnValue(updateDTO);
-      const updatedStock = await service.updateStock(updateDTO);
-      expect(updatedStock).toMatchObject(updateDTO);
-      expect(stockRepositoryMock.updateStock).toHaveBeenCalledWith(updateDTO);
     });
   });
 });

@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { StocksRepository } from './stocks.repository';
 import { CreateStockDto } from './dtos/create-stock.dto';
-import { Stock } from './entities/stocks.entity';
+import { Stock } from '../entities/stocks.entity';
 
 @Injectable()
 export class StocksService {
@@ -31,9 +31,6 @@ export class StocksService {
     //     }
     // }
 
-    async updateStock(updateStockDto: CreateStockDto): Promise<Stock> {
-        return await this.stocksRepository.updateStock(updateStockDto);
-    }
 
 
 

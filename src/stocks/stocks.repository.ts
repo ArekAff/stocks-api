@@ -1,5 +1,5 @@
 import { Repository, DataSource} from "typeorm";
-import { Stock } from "./entities/stocks.entity";
+import { Stock } from "../entities/stocks.entity";
 import { CreateStockDto } from "./dtos/create-stock.dto";
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -30,38 +30,26 @@ export class StocksRepository extends Repository<Stock> {
     }
 
 
-    async createStock({ ticker, price, timestamp}: CreateStockDto): Promise<Stock> {
-        // if the stock already exists, update it
-        const check = await this.getStockByTicker(ticker);
-        if (check) {
-            return await this.updateStock({ticker, price, timestamp});
-        }
-        const stock = this.create({
-            ticker,
-            price,
-            timestamp
-        });
+    async createStock({ ticker, price, timestamp }: CreateStockDto): Promise<Stock> {
+        const queryRunner = this.dataSource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction("SERIALIZABLE");
+        try {
+          // Remove existing quote for the ticker, if any
+            await queryRunner.manager.delete(Stock, { ticker });
 
-        try {
-            await stock.save();
+          // Create the new quote
+            const stock = this.create({ ticker, price, timestamp });
+            await queryRunner.manager.save(stock);
+
+            await queryRunner.commitTransaction();
+
             return stock;
         } catch (error) {
-            throw error.message;
-        }
-    }
-    async updateStock({ticker, price, timestamp}: CreateStockDto): Promise<Stock> {
-        const stock = await this.getStockByTicker(ticker);
-        // if the stock doesn't exist, create it
-        if (!stock) {
-            return await this.createStock({ticker, price, timestamp});
-        }
-        stock.price = price;
-        stock.timestamp = timestamp;
-        try {
-            await stock.save();
-            return stock;
-        } catch (error) {
-            throw error.message;
+            await queryRunner.rollbackTransaction();
+            throw new InternalServerErrorException(error.message);
+        } finally {
+            await queryRunner.release();
         }
     }
     
