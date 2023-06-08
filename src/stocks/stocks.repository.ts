@@ -33,16 +33,17 @@ export class StocksRepository extends Repository<Stock> {
     async createStock({ ticker, price, timestamp }: CreateStockDto): Promise<Stock> {
         const queryRunner = this.dataSource.createQueryRunner();
         await queryRunner.startTransaction();
-    
         try {
           // Remove existing quote for the ticker, if any
-        await queryRunner.manager.delete(Stock, { ticker });
-          // Create the new quote
-        const stock = this.create({ ticker, price, timestamp });
-        await queryRunner.manager.save(stock);
-        await queryRunner.commitTransaction();
+            await queryRunner.manager.delete(Stock, { ticker });
 
-        return stock;
+          // Create the new quote
+            const stock = this.create({ ticker, price, timestamp });
+            await queryRunner.manager.save(stock);
+
+            await queryRunner.commitTransaction();
+
+            return stock;
         } catch (error) {
             await queryRunner.rollbackTransaction();
             throw new InternalServerErrorException(error.message);
