@@ -20,16 +20,9 @@ type Query {
 
 type Mutation {
   createStock(Stock: CreateStockDto!): Stock!
-  updateStock(StockUpdate: UpdateStockDto!): Stock!
 }
 
 input CreateStockDto {
-  ticker: String!
-  price: Float!
-  timestamp: DateTime!
-}
-
-input UpdateStockDto {
   ticker: String!
   price: Float!
   timestamp: DateTime!
