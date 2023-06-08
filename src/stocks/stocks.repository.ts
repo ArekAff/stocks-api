@@ -32,7 +32,8 @@ export class StocksRepository extends Repository<Stock> {
 
     async createStock({ ticker, price, timestamp }: CreateStockDto): Promise<Stock> {
         const queryRunner = this.dataSource.createQueryRunner();
-        await queryRunner.startTransaction();
+        await queryRunner.connect();
+        await queryRunner.startTransaction("SERIALIZABLE");
         try {
           // Remove existing quote for the ticker, if any
             await queryRunner.manager.delete(Stock, { ticker });
